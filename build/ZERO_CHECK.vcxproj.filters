@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\build\CMakeFiles\ced5dfce857c0dc3c1784710e2bfbf30\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2D8B847B-CCEE-3400-8586-B7DB4B5726F2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
