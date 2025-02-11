@@ -1,6 +1,6 @@
-^C:\USERS\CANZI\DOCUMENTS\ML_AI_PROJECTS\NN_C\CMAKELISTS.TXT
+^C:\USERS\CANZI\DOCUMENTS\GITHUB\NEURAL_NETWORK_C\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/canzi/Documents/ML_AI_projects/NN_C -BC:/Users/canzi/Documents/ML_AI_projects/NN_C/build --check-stamp-file C:/Users/canzi/Documents/ML_AI_projects/NN_C/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/canzi/Documents/GitHub/Neural_Network_C -BC:/Users/canzi/Documents/GitHub/Neural_Network_C/build --check-stamp-file C:/Users/canzi/Documents/GitHub/Neural_Network_C/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

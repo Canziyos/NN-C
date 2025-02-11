@@ -1,28 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\main.c">
+    <ClCompile Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\Model.c">
+    <ClCompile Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\Model.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\init.c">
+    <ClCompile Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\layer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\math_utils.c">
+    <ClCompile Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\math_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\debug_utils.c">
+    <ClCompile Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\debug_utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\activation.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\canzi\Documents\ML_AI_projects\NN_C\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\canzi\Documents\GitHub\Neural_Network_C\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{03C5C3AB-BF93-3691-8882-6574D24D1821}</UniqueIdentifier>
+      <UniqueIdentifier>{685A420F-FAE9-3353-80BE-A066EE6B6CA4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

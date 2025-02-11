@@ -2,13 +2,13 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\canzi\Documents\ML_AI_projects\NN_C\build\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>C:\Users\canzi\Documents\GitHub\Neural_Network_C\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\canzi\Documents\ML_AI_projects\NN_C\build\Debug\nn_executable.exe</FullPath>
+      <FullPath>C:\Users\canzi\Documents\GitHub\Neural_Network_C\build\Debug\nn_executable.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\canzi\Documents\ML_AI_projects\NN_C\build\x64\Debug\ALL_BUILD</FullPath>
+      <FullPath>C:\Users\canzi\Documents\GitHub\Neural_Network_C\build\x64\Debug\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
