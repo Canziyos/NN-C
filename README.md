@@ -1,14 +1,13 @@
 # Neural Network in C.
 
-## **Project Overview**
-This project implements a **feedforward neural network**, so far, in C. The network uses **dynamic memory allocation** to support different architectures.
+Practising by implementing a **feedforward neural network**, so far, in C. The network uses dynamic memory allocation to support different architectures.
 
 - **Architecture:** 3 layers (input, hidden, and output).
 - **Activation Function:** Sigmoid
-- **Memory Management:** Dynamic allocation with cleanup.
+- **Memory Management:**.
 
 
-## **Project Structure**
+## **Structure of c directory**
 | **File**            | **Purpose**                                               |
 |--------------------|-----------------------------------------------------------|
 | `main.c`           | Entry point for testing the network with multiple inputs.  |
@@ -20,89 +19,9 @@ This project implements a **feedforward neural network**, so far, in C. The netw
 | `CMakeLists.txt`   | Build configuration for the project.                       |
 
 ---
-### **Analysis of Test Case Outputs:**
-
-1. **Test Case 1: `{0.5, -0.3}`**
-   - Hidden layer activations:  
-     ```
-     Activation[0] = 0.486
-     Activation[1] = 0.520
-     Activation[2] = 0.451
-     Activation[3] = 0.481
-     ```
-   - Output activation:  
-     ```
-     Activation[0] = 0.440
-     ```
-
-   - The activations **vary across neurons** in the hidden layer, reflecting that the **weights and biases are contributing correctly.**
-
-2. **Test Case 2: `{1.0, 0.8}` (Larger positive inputs)**
-   - Hidden layer activations:  
-     ```
-     Activation[0] = 0.578
-     Activation[1] = 0.448
-     Activation[2] = 0.347
-     Activation[3] = 0.405
-     ```
-   - Output activation:  
-     ```
-     Activation[0] = 0.468
-     ```
-
-   - The activations respond differently due to larger positive inputs, showing that the **network handles diverse inputs correctly.**
-
-3. **Test Case 3: `{-0.2, 0.5}` (Mixed signs)**
-   - Hidden layer activations:  
-     ```
-     Activation[0] = 0.534
-     Activation[1] = 0.467
-     Activation[2] = 0.503
-     Activation[3] = 0.492
-     ```
-   - Output activation:  
-     ```
-     Activation[0] = 0.441
-     ```
-
-   - The mixed signs result in **slightly different activations**, proving that the network correctly propagates input variations.
-
-4. **Test Case 4: `{0.0, 0.0}` (All zeros)**
-   - Hidden layer activations:  
-     ```
-     Activation[0] = 0.500
-     Activation[1] = 0.500
-     Activation[2] = 0.500
-     Activation[3] = 0.500
-     ```
-   - Output activation:  
-     ```
-     Activation[0] = 0.436
-     ```
-
-   Since all inputs are zero, the hidden layer activations are **solely influenced by the biases**, which results in a balanced activation of **0.5** across the hidden neurons.
-
-5. **Test Case 5: `{-1.0, -0.8}` (Large negative inputs)**
-   - Hidden layer activations:  
-     ```
-     Activation[0] = 0.422
-     Activation[1] = 0.552
-     Activation[2] = 0.653
-     Activation[3] = 0.595
-     ```
-   - Output activation:  
-     ```
-     Activation[0] = 0.405
-     ```
-- Negative inputs cause varied activations, i.e., The network is responding properly to both positive and negative ranges.
-
-## In general:
-
-- The activations across the hidden and output layers **are not uniform**— they change dynamically based on the inputs, which is exactly what we expect in a properly functioning network.
-- The **sigmoid activation values are in the range [0, 1]**, as expected.
 
 
-## 🔧 **How to Build and Run**
+## Build and Run
 
 ### **1. Clone the repository**
 ```bash
@@ -128,7 +47,7 @@ Debug\nn_executable.exe  # Windows
 ./nn_executable          # Linux/Mac
 ```
 
-## 🚀 **How It Works**
+## **How It Works**
 ### **Step 1: Initialization**
 - The network is initialized using **random weights and biases** between -0.5 and 0.5.
 - The architecture is defined in **`main.c`** using the **`NeuralNetwork` struct.**
@@ -161,15 +80,10 @@ Debug\nn_executable.exe  # Windows
 
 ---
 
-## 🌟 **Future Improvements**
-1. **Implement Backpropagation:** Add gradient descent and backpropagation to train the network.
-2. **Expand the Architecture:** Test the network with more layers and neurons.
-3. **Optimize Memory Usage:** Implement static memory allocation for embedded systems.
-
----
-
-## 🔗 **Contributing**
-Contributions are welcome! Feel free to fork the project and submit pull requests.
+## **Coming Improvements**
+1. **Implement Backpropagation:** gradient descent and backpropagation to train the network.
+2. **Expand the Architecture:** Test with more layers and neurons.
+3. **Optimize Memory Usage:** static memory allocation for embedded systems.
 
 ---
 
