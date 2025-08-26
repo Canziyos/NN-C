@@ -12,7 +12,7 @@ class Neuron:
         self.bias = random.uniform(-0.5, 0.5)
 
 
-    def pass_forward(self, inputs):
+    def forward(self, inputs):
         if len(inputs) != self.input_s:
             raise ValueError("Input length does not match number of weights!")
 

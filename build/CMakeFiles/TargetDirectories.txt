@@ -1,3 +1,0 @@
-C:/Users/canzi/Documents/GitHub/Neural_Network_C/build/CMakeFiles/nn_executable.dir
-C:/Users/canzi/Documents/GitHub/Neural_Network_C/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/canzi/Documents/GitHub/Neural_Network_C/build/CMakeFiles/ZERO_CHECK.dir

@@ -11,11 +11,16 @@ class DenseLayer:
         self.neurons = [Neuron(input_s=self.input_s) 
                         for _ in range(self.n_neurons)]
         
+        # for forward-pass values.
+        self.z_values = []
+        self.a_values = []
 
     def forward(self, inputs):
         # Compute raw outputs from all neurons.
-        raw_outputs = [neuron.pass_forward(inputs) for neuron in self.neurons]
+        self.z_values = [neuron.forward(inputs) for neuron in self.neurons]
 
         # Apply activation to each raw output.
-        return [self.activation(z) for z in raw_outputs]
+        self.a_values = [self.activation(z) for z in self.z_values]
+
+        return self.a_values
 
