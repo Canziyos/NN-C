@@ -45,7 +45,7 @@ for epoch in range(num_epochs):
 
         total_loss += loss
 
-    # Print every 100 epochs (to keep logs readable)
+    # keep logs readable.
     if epoch % 100 == 0 or epoch == num_epochs - 1:
         print(f"Epoch {epoch}, Avg Loss: {total_loss / len(dataset)}")
 
