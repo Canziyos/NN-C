@@ -1,11 +1,12 @@
-from activations import sigmoid
+from activations import sigmoid, sigmoid_prime
 from neuron import Neuron
 
 class DenseLayer:
-    def __init__(self, input_s=None, n_neurons=None, activation=sigmoid):
+    def __init__(self, input_s=None, n_neurons=None, activation=sigmoid, activation_prime = sigmoid_prime):
         self.input_s = input_s
         self.n_neurons = n_neurons
         self.activation = activation
+        self.activation_prime = activation_prime
 
         # Create a list of Neuron objects.
         self.neurons = [Neuron(input_s=self.input_s) 
