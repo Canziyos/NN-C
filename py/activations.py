@@ -28,3 +28,10 @@ def tanh(z):
 def tanh_prime(z):
     t = tanh(z)
     return 1 - t**2
+
+def softmax(z_values):
+    # subtract max (numerical stability).
+    max_z = max(z_values)
+    exp_vals = [math.exp(z - max_z) for z in z_values]
+    sum_exp = sum(exp_vals)
+    return [val / sum_exp for val in exp_vals]

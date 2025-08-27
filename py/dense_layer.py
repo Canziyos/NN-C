@@ -34,8 +34,13 @@ class DenseLayer:
             self.neurons.append(neuron)
 
     def forward(self, inputs):
-        # Compute raw outputs from all neurons.
+        # Compute raw outputs from all neurons
         self.z_values = [neuron.forward(inputs) for neuron in self.neurons]
-        # Apply activation to each raw output.
-        self.a_values = [self.activation(z) for z in self.z_values]
+
+        # Apply activation
+        if self.activation.__name__ == "softmax":
+            self.a_values = self.activation(self.z_values)   # vector.
+        else:
+            self.a_values = [self.activation(z) for z in self.z_values]  # elementwise.
+
         return self.a_values

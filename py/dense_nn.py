@@ -27,15 +27,21 @@ class DenseNN:
             x = layer.forward(x)
             self.layer_outputs.append(x)
         return x
-
+    
+    
     def backward(self, y_true, y_pred):
         deltas = [None] * self.n_layers
         grads = []
 
         # 1. Output layer delta
         last = self.last_layer
-        deltas[-1] = output_layer_delta(y_true, y_pred,
-                                        last.z_values, last.activation_prime)
+        if last.activation.__name__ == "softmax":
+            # Simplified delta for softmax + cross-entropy
+            deltas[-1] = [yp - yt for yp, yt in zip(y_pred, y_true)]
+        else:
+            # Generic case (sigmoid, tanh, etc. with MSE)
+            deltas[-1] = output_layer_delta(y_true, y_pred,
+                                            last.z_values, last.activation_prime)
 
         # 2. Hidden layers deltas (backward loop).
         for l in reversed(range(self.n_layers - 1)):  # skip output.

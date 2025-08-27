@@ -1,3 +1,4 @@
+import math
 
 def MSE(y_true, y_pred):
     if len(y_true) == 0 or len(y_true) != len(y_pred):
@@ -30,3 +31,18 @@ def hidden_layer_delta(z_values, activation_prime, next_layer_weights, next_laye
         deltas.append(activation_prime(z) * downstream)
     return deltas
 
+
+def cross_entropy(y_true, y_pred, eps=1e-15):
+    """
+    Cross-entropy loss for multi-class classification.
+    y_true: one list of true labels (e.g., [0,1,0])
+    y_pred: list of predicted probabilities (softmax output)
+    eps: to avoid log(0)
+    """
+    if len(y_true) != len(y_pred):
+        raise ValueError("cross_entropy: y_true and y_pred must be the same length")
+
+    # Clip predictions to avoid log(0)
+    y_pred = [min(max(p, eps), 1 - eps) for p in y_pred]
+
+    return -sum(t * math.log(p) for t, p in zip(y_true, y_pred))
