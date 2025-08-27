@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 
-py/__pycache__/
-py/*.py[cod]
+__pycache__/
+*.pyc
