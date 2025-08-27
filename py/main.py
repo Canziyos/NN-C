@@ -5,7 +5,7 @@ from dense_nn import DenseNN
 from utils import MSE, output_layer_delta, output_gradient, hidden_layer_delta
 
 # ---------------------------------
-# Basic unit tests
+# Basic tests
 # ---------------------------------
 
 # Test a single neuron.
@@ -29,40 +29,40 @@ print("\nDense Layer (ReLU) outputs:", layer_relu.forward([2, 2, 2]))
 net = DenseNN([
     DenseLayer(input_s=2, n_neurons=2, activation=sigmoid),
     DenseLayer(input_s=2, n_neurons=2, activation=sigmoid),
-    DenseLayer(input_s=2, n_neurons=1, activation=sigmoid)  # output layer sigmoid
+    DenseLayer(input_s=2, n_neurons=1, activation=sigmoid) 
 ])
 
 net.summary()
 
 # ---------------------------------
-# Delta tests (XOR sample)
+# Delta tests (XOR sample).
 # ---------------------------------
 
 x = [0, 1]
 y_true = [1]
 
-# Forward pass
+# Forward pass.
 y_pred = net.forward(x)
 print("\nForward pass prediction:", y_pred)
 
-# Output layer delta
+# Output layer delta.
 last_layer = net.last_layer
 delta_out = output_layer_delta(y_true, y_pred, last_layer.z_values, sigmoid_prime)
 print("Delta (output layer):", delta_out)
 
-# Output layer gradients
-prev_a = net.layer_outputs[-2]  # activations from 2nd hidden layer
+# Output layer gradients.
+prev_a = net.layer_outputs[-2]  # activations from 2nd hidden layer.
 w_grads, b_grads = output_gradient(delta_out, prev_a)
 print("Output weight gradients:", w_grads)
 print("Output bias gradients:", b_grads)
 
-# Hidden layer (layer before output) delta
+# Hidden layer (layer before output) delta.
 hidden_layer = net.hidden_layers[-1]
 hidden_deltas = hidden_layer_delta(hidden_layer.z_values, sigmoid_prime,
                                    [n.weights for n in last_layer.neurons], delta_out)
 print("Hidden layer deltas:", hidden_deltas)
 
-# First hidden layer delta
+# First hidden layer delta.
 first_hidden = net.first_layer
 second_hidden = net.hidden_layers[0]
 first_deltas = hidden_layer_delta(first_hidden.z_values, sigmoid_prime,

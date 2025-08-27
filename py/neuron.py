@@ -1,15 +1,13 @@
 import random
 
 class Neuron:
-    def __init__(self, input_s=None):
+    def __init__(self, input_s=None,):
 
         self.input_s = input_s
 
-        # Generate one weight for each input.
-        self.weights = [random.uniform(-0.5, 0.5) for _ in range(self.input_s)]
-
-        # Generate random bias.
-        self.bias = random.uniform(-0.5, 0.5)
+        # The following will be set by DenseLayer
+        self.weights = []  
+        self.bias = 0.0 
 
 
     def forward(self, inputs):
