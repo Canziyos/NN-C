@@ -2,8 +2,7 @@
 
 NN-C is a small, dependency-free neural-network inference library written in C99.
 It is intended as an auditable foundation for resource-constrained and embedded
-experiments, not as a replacement for mature runtimes such as TensorFlow Lite
-Micro or CMSIS-NN.
+experiments, nothing else.
 
 ## Current scope
 
@@ -33,7 +32,7 @@ ctest --test-dir build --output-on-failure
 ./build/nnc_basic
 ```
 
-Visual Studio uses a multi-configuration generator. In PowerShell, select the
+Since Visual Studio uses a multi-configuration generator, select, in PowerShell, the
 configuration for both the build and CTest:
 
 ```powershell
@@ -82,7 +81,7 @@ application.
 NN-C currently performs inference only. Training belongs in a host-side tool,
 with learned parameters exported into C arrays or a compact model format.
 Quantization, convolution and microcontroller benchmarks are possible later
-milestones, but they will be added only with tests and a concrete use case.
+milestones.
 
 ## License
 
