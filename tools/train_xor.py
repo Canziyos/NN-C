@@ -10,6 +10,7 @@ import random
 import sys
 from pathlib import Path
 
+from nnc_model import canonicalize_numbers
 
 SAMPLES = (
     ((0.0, 0.0), 0.0),
@@ -38,7 +39,6 @@ def train(epochs: int, learning_rate: float) -> tuple[dict, float]:
     output_weights = initialize(1, 4, rng)
     output_bias = 0.0
     loss = 0.0
-
     for _ in range(epochs):
         hidden_weight_grad = [[0.0] * 2 for _ in range(4)]
         hidden_bias_grad = [0.0] * 4
@@ -107,7 +107,7 @@ def train(epochs: int, learning_rate: float) -> tuple[dict, float]:
             },
         ],
     }
-    return model, loss / len(SAMPLES)
+    return canonicalize_numbers(model), loss / len(SAMPLES)
 
 
 def render(model: dict) -> str:
