@@ -13,6 +13,13 @@ import nnc_model  # noqa: E402
 
 
 class ExportModelTests(unittest.TestCase):
+    def test_canonicalizes_platform_float_noise(self) -> None:
+        model = {"weights": [[0.123456789123, -0.0]]}
+        self.assertEqual(
+            nnc_model.canonicalize_numbers(model),
+            {"weights": [[0.12345679, -0.0]]},
+        )
+
     def test_committed_header_is_current(self) -> None:
         layers = nnc_model.load_model(ROOT / "models" / "example_model.json")
         expected = nnc_header.render_header(layers, "example_model")
