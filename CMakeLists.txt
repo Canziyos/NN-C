@@ -1,43 +1,35 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(nnc VERSION 0.1.0 LANGUAGES C)
+project(nnc VERSION 0.2.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-add_library(nnc
-    Model.c
-    init.c
-    math_utils.c
-)
+add_library(nnc src/nn.c)
+target_include_directories(nnc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_include_directories(nnc PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-if(NOT MSVC)
+if(MSVC)
+    target_compile_options(nnc PRIVATE /W4)
+else()
+    target_compile_options(nnc PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
     target_link_libraries(nnc PUBLIC m)
 endif()
 
-add_executable(nn_example
-    main.c
-    debug_utils.c
-)
-
-target_link_libraries(nn_example PRIVATE nnc)
+add_executable(nnc_basic examples/basic.c)
+target_link_libraries(nnc_basic PRIVATE nnc)
 
 include(CTest)
 
 if(BUILD_TESTING)
-    add_executable(test_forward
-        tests/test_forward.c
-    )
+    add_executable(nnc_tests tests/test_forward.c)
+    target_link_libraries(nnc_tests PRIVATE nnc)
 
-    target_link_libraries(test_forward PRIVATE nnc)
+    if(MSVC)
+        target_compile_options(nnc_tests PRIVATE /W4)
+    else()
+        target_compile_options(nnc_tests PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
+    endif()
 
-    add_test(
-        NAME deterministic_forward
-        COMMAND test_forward
-    )
+    add_test(NAME nnc_tests COMMAND nnc_tests)
 endif()
