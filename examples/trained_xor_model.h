@@ -9,11 +9,11 @@
 
 static const float trained_xor_layer_0_weights[] = {
     -2.96870312F, -2.96690147F, 2.56224943F, -3.98994125F, 4.10399662F, -2.7467042F,
-    0.474840763F, 1.15029763F
+    0.47484076F, 1.15029763F
 };
 
 static const float trained_xor_layer_0_biases[] = {
-    0.640961692F, -0.809378144F, 0.927576131F, -1.14637085F
+    0.64096169F, -0.80937814F, 0.92757613F, -1.14637085F
 };
 
 static const float trained_xor_layer_1_weights[] = {
