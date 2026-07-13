@@ -26,6 +26,20 @@ class DenseLayer:
     biases: tuple[float, ...]
 
 
+def canonicalize_numbers(value: Any, digits: int = 8) -> Any:
+    """Round model floats before serialization to hide libm last-bit noise."""
+    if isinstance(value, float):
+        return round(value, digits)
+    if isinstance(value, list):
+        return [canonicalize_numbers(item, digits) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: canonicalize_numbers(item, digits)
+            for key, item in value.items()
+        }
+    return value
+
+
 def _size(value: Any, field: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise ModelError(f"{field} must be a positive integer")
