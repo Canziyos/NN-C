@@ -24,20 +24,26 @@ weights[output_neuron * input_count + input_neuron]
 
 ## Build and test
 
+For single-configuration generators:
+
 ```sh
 cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
-```
-
-Run the example:
-
-```sh
 ./build/nnc_basic
 ```
 
-On multi-configuration Windows generators, the executable may be under
-`build/Debug` or `build/Release`.
+Visual Studio uses a multi-configuration generator. In PowerShell, select the
+configuration for both the build and CTest:
+
+```powershell
+cmake -S . -B build
+cmake --build build --config Debug
+ctest --test-dir build -C Debug --output-on-failure
+.\build\Debug\nnc_basic.exe
+```
+
+Replace `Debug` with `Release` for an optimized build.
 
 ## Minimal model
 
