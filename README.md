@@ -1,23 +1,19 @@
 # NN-C
 
-NN-C is a small, dependency-free neural-network inference library written in C99.
-It is intended as an auditable foundation for resource-constrained and embedded
-experiments, not as a replacement for mature runtimes such as TensorFlow Lite
-Micro or CMSIS-NN.
+NN-C is a small C99 neural-network inference library for auditable embedded
+experiments. It is not intended to replace TensorFlow Lite Micro or CMSIS-NN.
 
-## Current scope
+## Features
 
-- Dense, sequential feed-forward networks
-- Caller-owned workspace with no heap allocation
-- Externally supplied, read-only weights and biases
+- Sequential dense networks using caller-owned workspace
+- No heap allocation during inference
+- Read-only external weights and biases
 - Linear, ReLU, sigmoid and tanh activations
-- Dimension and workspace validation
-- Deterministic numerical tests
-- Dependency-free Python-to-C model exporter
-- Portable CMake build and Linux CI
+- Shape and workspace validation with explicit status codes
+- Dependency-free Python training and JSON-to-C export examples
+- Deterministic C/Python tests and GitHub Actions CI
 
-The inference path uses `float` values. Weights are stored in output-major row
-order:
+Weights use output-major row order:
 
 ```text
 weights[output_neuron * input_count + input_neuron]
@@ -25,17 +21,15 @@ weights[output_neuron * input_count + input_neuron]
 
 ## Build and test
 
-For single-configuration generators:
+Single-configuration generators:
 
 ```sh
 cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
-./build/nnc_basic
 ```
 
-Visual Studio uses a multi-configuration generator. In PowerShell, select the
-configuration for both the build and CTest:
+Visual Studio PowerShell:
 
 ```powershell
 cmake -S . -B build
@@ -46,28 +40,31 @@ ctest --test-dir build -C Debug --output-on-failure
 
 Replace `Debug` with `Release` for an optimized build.
 
-## Export a model
+## Train and export
 
-The exporter accepts a versioned JSON description and writes a deterministic C
-header containing weights, biases, layer descriptors and the required workspace
-size:
-
-```powershell
-python tools\export_model.py models\example_model.json `
-    --output examples\generated_model.h `
-    --symbol example_model
-```
-
-Check that a committed generated header is current without rewriting it:
+`train_xor.py` is a deterministic, dependency-free host-training example. It
+learns a 2-4-1 nonlinear XOR model and writes the versioned JSON interchange
+format:
 
 ```powershell
-python tools\export_model.py models\example_model.json `
-    --output examples\generated_model.h `
-    --symbol example_model `
-    --check
+python tools\train_xor.py --output models\trained_xor.json
+python tools\export_model.py models\trained_xor.json `
+    --output examples\trained_xor_model.h --symbol trained_xor
 ```
 
-The JSON format is deliberately small:
+Build and run the exported model:
+
+```powershell
+cmake --build build --config Debug
+.\build\Debug\nnc_trained_xor.exe
+```
+
+The example prints all four XOR probabilities and classifications. CTest also
+retrains the model, checks byte-for-byte reproducibility, verifies that the
+generated header is current, and runs the learned parameters through the C
+inference engine.
+
+## JSON model format
 
 ```json
 {
@@ -84,58 +81,26 @@ The JSON format is deliberately small:
 }
 ```
 
-Each weight row belongs to one output neuron. Supported activation names are
-`linear`, `relu`, `sigmoid` and `tanh`. The exporter rejects malformed
-shapes, disconnected layers, unsupported activations, non-finite values and
-invalid C symbols.
+Each row belongs to one output neuron. Supported activations are `linear`,
+`relu`, `sigmoid` and `tanh`. The exporter rejects invalid shapes,
+disconnected layers, unsupported activations, non-finite values and invalid C
+symbols.
 
-Run the generated-model example after building:
+Check a committed header without rewriting it:
 
 ```powershell
-.\build\Debug\nnc_generated.exe
+python tools\export_model.py models\example_model.json `
+    -o examples\generated_model.h --symbol example_model --check
 ```
 
-Training code can write this JSON directly. The embedded C build consumes only
-the generated header and retains no Python runtime dependency.
+The embedded C build consumes only the generated header; it has no Python
+runtime dependency. Training remains a host-side responsibility.
 
-## Minimal model
+## Scope
 
-```c
-#include "nnc/nn.h"
-
-static const float weights[] = {
-    0.8F, -0.2F,
-    -0.4F, 0.9F
-};
-static const float biases[] = {0.1F, -0.1F};
-
-static const nn_dense_layer_t layers[] = {
-    {
-        .input_count = 2,
-        .output_count = 2,
-        .weights = weights,
-        .biases = biases,
-        .activation = NN_ACTIVATION_SIGMOID
-    }
-};
-
-float workspace[4];
-nn_model_t model;
-
-nn_model_init(&model, layers, 1, workspace, 4);
-```
-
-Use `nn_workspace_floats()` when the required workspace size should be
-calculated from a model description. Call `nn_predict()` with explicit input
-and output lengths; it returns a status code rather than terminating the host
-application.
-
-## Design boundaries
-
-NN-C currently performs inference only. Training belongs in a host-side tool,
-with learned parameters exported through the JSON interchange format.
-Quantization, convolution and microcontroller benchmarks are possible later
-milestones, but they will be added only with tests and a concrete use case.
+NN-C currently supports dense `float` inference. Quantization, convolution and
+microcontroller benchmarks are later milestones only when backed by tests and a
+concrete use case.
 
 ## License
 
