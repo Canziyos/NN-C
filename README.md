@@ -1,91 +1,83 @@
-# Neural Network in C.
+# NN-C
 
-Practising by implementing a **feedforward neural network**, so far, in C. The network uses dynamic memory allocation to support different architectures.
+NN-C is a small, dependency-free neural-network inference library written in C99.
+It is intended as an auditable foundation for resource-constrained and embedded
+experiments, not as a replacement for mature runtimes such as TensorFlow Lite
+Micro or CMSIS-NN.
 
-- **Architecture:** 3 layers (input, hidden, and output).
-- **Activation Function:** Sigmoid
-- **Memory Management:**.
+## Current scope
 
+- Dense, sequential feed-forward networks
+- Caller-owned workspace with no heap allocation
+- Externally supplied, read-only weights and biases
+- Linear, ReLU, sigmoid and tanh activations
+- Dimension and workspace validation
+- Deterministic numerical tests
+- Portable CMake build and Linux CI
 
-## **Structure of c directory**
-| **File**            | **Purpose**                                               |
-|--------------------|-----------------------------------------------------------|
-| `main.c`           | Entry point for testing the network with multiple inputs.  |
-| `Model.h`          | Core structure definition for the neural network.          |
-| `Model.c`          | Implements forward propagation logic.                      |
-| `init.h`, `init.c` | Network initialization and memory allocation.              |
-| `math_utils.h`, `math_utils.c` | Contains **matrix multiplication** and **sigmoid activation**. |
-| `debug_utils.h`, `debug_utils.c` | Functions for printing activations and debugging.          |
-| `CMakeLists.txt`   | Build configuration for the project.                       |
+The inference path uses `float` values. Weights are stored in output-major row
+order:
 
----
-
-
-## Build and Run
-
-### **1. Clone the repository**
-```bash
-git clone <repository-url>
-cd <repository-folder>
+```text
+weights[output_neuron * input_count + input_neuron]
 ```
 
-### **2. Create a build directory and run CMake**
-```bash
-mkdir build
-cd build
-cmake ..
+## Build and test
+
+```sh
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build --output-on-failure
 ```
 
-### **3. Build the project**
-```bash
-cmake --build .
+Run the example:
+
+```sh
+./build/nnc_basic
 ```
 
-### **4. Run the executable**
-```bash
-Debug\nn_executable.exe  # Windows
-./nn_executable          # Linux/Mac
+On multi-configuration Windows generators, the executable may be under
+`build/Debug` or `build/Release`.
+
+## Minimal model
+
+```c
+#include "nnc/nn.h"
+
+static const float weights[] = {
+    0.8F, -0.2F,
+    -0.4F, 0.9F
+};
+static const float biases[] = {0.1F, -0.1F};
+
+static const nn_dense_layer_t layers[] = {
+    {
+        .input_count = 2,
+        .output_count = 2,
+        .weights = weights,
+        .biases = biases,
+        .activation = NN_ACTIVATION_SIGMOID
+    }
+};
+
+float workspace[4];
+nn_model_t model;
+
+nn_model_init(&model, layers, 1, workspace, 4);
 ```
 
-## **How It Works**
-### **Step 1: Initialization**
-- The network is initialized using **random weights and biases** between -0.5 and 0.5.
-- The architecture is defined in **`main.c`** using the **`NeuralNetwork` struct.**
+Use `nn_workspace_floats()` when the required workspace size should be
+calculated from a model description. Call `nn_predict()` with explicit input
+and output lengths; it returns a status code rather than terminating the host
+application.
 
-### **Step 2: Forward Propagation**
-- For each layer, the activations are computed using **matrix multiplication**:
-  
-  \[ z = W \cdot A + b \]
-  
-  - The sigmoid activation function is applied to compute the output of each neuron:
+## Design boundaries
 
-  \[ \text{activation} = \frac{1}{1 + e^{-z}} \]
+NN-C currently performs inference only. Training belongs in a host-side tool,
+with learned parameters exported into C arrays or a compact model format.
+Quantization, convolution and microcontroller benchmarks are possible later
+milestones, but they will be added only with tests and a concrete use case.
 
-### **Step 3: Output**
-- The network propagates the input through the hidden layer to the output layer, and the activations are printed using **debug utilities.**
+## License
 
-### **Step 4: Cleanup**
-- Dynamically allocated memory is safely deallocated using **`free_network()`** to avoid memory leaks.
-
-
-## **Test Cases and Results**
-
-| **Test Case**         | **Input**         | **Hidden Layer Activations**                            | **Output Activation** |
-|----------------------|-------------------|--------------------------------------------------------|-----------------------|
-| **Test Case 1**       | `{0.5, -0.3}`     | `{0.486, 0.520, 0.451, 0.481}`                         | `0.440`               |
-| **Test Case 2**       | `{1.0, 0.8}`      | `{0.578, 0.448, 0.347, 0.405}`                         | `0.468`               |
-| **Test Case 3**       | `{-0.2, 0.5}`     | `{0.534, 0.467, 0.503, 0.492}`                         | `0.441`               |
-| **Test Case 4**       | `{0.0, 0.0}`      | `{0.500, 0.500, 0.500, 0.500}`                         | `0.436`               |
-| **Test Case 5**       | `{-1.0, -0.8}`    | `{0.422, 0.552, 0.653, 0.595}`                         | `0.405`               |
-
----
-
-## **Coming Improvements**
-1. **Implement Backpropagation:** gradient descent and backpropagation to train the network.
-2. **Expand the Architecture:** Test with more layers and neurons.
-3. **Optimize Memory Usage:** static memory allocation for embedded systems.
-
----
-
-## 🔗 **License**
-[MIT License](LICENSE)
+[MIT](LICENSE)
