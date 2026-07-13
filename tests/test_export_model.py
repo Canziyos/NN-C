@@ -1,0 +1,60 @@
+import json
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+
+import export_model  # noqa: E402
+
+
+class ExportModelTests(unittest.TestCase):
+    def test_committed_header_is_current(self) -> None:
+        layers = export_model.load_model(ROOT / "models" / "example_model.json")
+        expected = export_model.render_header(layers, "example_model")
+        actual = (ROOT / "examples" / "generated_model.h").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(actual, expected)
+
+    def test_rejects_disconnected_layers(self) -> None:
+        model = {
+            "format": "nnc-dense-v1",
+            "layers": [
+                {
+                    "input_count": 2,
+                    "output_count": 2,
+                    "activation": "relu",
+                    "weights": [[1, 0], [0, 1]],
+                    "biases": [0, 0],
+                },
+                {
+                    "input_count": 3,
+                    "output_count": 1,
+                    "activation": "linear",
+                    "weights": [[1, 1, 1]],
+                    "biases": [0],
+                },
+            ],
+        }
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "invalid.json"
+            path.write_text(json.dumps(model), encoding="utf-8")
+            with self.assertRaisesRegex(
+                export_model.ExportError,
+                "does not match",
+            ):
+                export_model.load_model(path)
+
+    def test_rejects_invalid_c_symbol(self) -> None:
+        layers = export_model.load_model(ROOT / "models" / "example_model.json")
+        with self.assertRaisesRegex(export_model.ExportError, "C identifier"):
+            export_model.render_header(layers, "9-invalid")
+
+
+if __name__ == "__main__":
+    unittest.main()
